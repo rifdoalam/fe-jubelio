@@ -8,12 +8,11 @@ import {
   updateProductApi,
 } from "@/services/product-api";
 import { toast } from "sonner";
-import { useRouter } from "nextjs-toploader/app";
 import { Pagination } from "@/stores/types/product";
 export default function useProduct() {
   const { product, setProduct, pagination, setPagination, productList, setProductList, productCreate, setProductCreate, loading, setLoading } =
     productStore();
-  const router = useRouter();
+
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProductCreate({ ...productCreate, [name]: value });
@@ -28,7 +27,7 @@ export default function useProduct() {
       toast.success("Product added successfully", {
         position: "top-right",
       });
-      router.refresh();
+      await hanldeFetchProduct(pagination);
     } catch (error: unknown) {
       toast.error((error as Error)?.message, {
         position: "top-right",
@@ -62,6 +61,7 @@ export default function useProduct() {
         position: "top-right",
       });
       await handleFetchDetail(sku);
+      await hanldeFetchProduct(pagination);
     } catch (error: unknown) {
       toast.error((error as Error)?.message, {
         position: "top-right",
@@ -75,7 +75,7 @@ export default function useProduct() {
       toast.success("Product deleted successfully", {
         position: "top-right",
       });
-      hanldeFetchProduct(pagination);
+      await hanldeFetchProduct(pagination);
     } catch (error: unknown) {
       toast.error((error as Error)?.message, {
         position: "top-right",

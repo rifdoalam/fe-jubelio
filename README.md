@@ -9,8 +9,8 @@ git clone git@github.com:rifdoalam/fe-jubelio.git
 cd frontend
 setup env 
 - NEXT_PUBLIC_API_URL = 
-npm install
-npm run dev
+pnpm install or npm install
+pnpm run dev or npm run dev
 </pre>
 
 <h2>🌐 API Services</h2>
