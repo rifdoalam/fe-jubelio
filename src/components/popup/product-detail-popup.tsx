@@ -69,6 +69,7 @@ export function ProductDetailPopup({ sku }: { sku: string }) {
                 <Input
                   type="number"
                   name="price"
+                  min={0}
                   placeholder="Input product price"
                   value={product?.price}
                   onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}

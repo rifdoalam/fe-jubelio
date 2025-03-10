@@ -54,7 +54,7 @@ export function ProductCreatePopup({ open, setOpen }: ProductCreatePopup) {
             </div>
             <div className="flex flex-col gap-2">
               <Label>Price*</Label>
-              <Input type="number" name="price" placeholder="Input product price" onChange={handleOnChange} required />
+              <Input type="number" name="price" min={0} placeholder="Input product price" onChange={handleOnChange} required />
             </div>
             <div className="flex flex-col gap-2">
               <Label>Image(URL)*</Label>
