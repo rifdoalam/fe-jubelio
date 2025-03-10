@@ -9,6 +9,7 @@ import {
 } from "@/services/product-api";
 import { toast } from "sonner";
 import { Pagination } from "@/stores/types/product";
+
 export default function useProduct() {
   const { product, setProduct, pagination, setPagination, productList, setProductList, productCreate, setProductCreate, loading, setLoading } =
     productStore();
@@ -22,26 +23,33 @@ export default function useProduct() {
     setProductCreate({ ...productCreate, [name]: value });
   };
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       await createProductApi(productCreate);
       toast.success("Product added successfully", {
         position: "top-right",
       });
       await hanldeFetchProduct(pagination);
+      setLoading(false);
     } catch (error: unknown) {
+      setLoading(false);
       toast.error((error as Error)?.message, {
         position: "top-right",
       });
     }
   };
   const hanldeFetchProduct = async (paginate: Pagination) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // Timeout 5 detik
     try {
       const response = await fetchProductApi(paginate);
       setProductList(response?.data?.data);
-    } catch (error: unknown) {
+    } catch (error) {
       toast.error((error as Error)?.message, {
         position: "top-right",
       });
+    } finally {
+      clearTimeout(timeoutId);
     }
   };
   const handleFetchDetail = async (sku: string) => {

@@ -7,7 +7,8 @@ import { ProductDetailPopup } from "@/components/popup/product-detail-popup";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import useProduct from "@/hooks/use-products";
-import { Import } from "lucide-react";
+import { Import, Loader2 } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   const { hanldeFetchProduct, pagination, setPagination, productList, handleImportProduct, loading } = useProduct();
@@ -23,7 +24,7 @@ export default function Home() {
     const handleScroll = () => {
       if (sectionRef.current) {
         const { scrollTop, scrollHeight, clientHeight } = sectionRef.current;
-        if (scrollTop + clientHeight >= scrollHeight - 1 && !isFetching) {
+        if (scrollTop + clientHeight >= scrollHeight - 1 && !isFetching && !loading) {
           setIsFetching(true);
         }
       }
@@ -39,7 +40,7 @@ export default function Home() {
         section.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [isFetching]); // Only depend on isFetching here
+  }, [isFetching, loading]); // Only depend on isFetching here
 
   useEffect(() => {
     if (isFetching) {
@@ -62,7 +63,7 @@ export default function Home() {
         {productList?.map((item, index) => (
           <Card className="col-span-3 min-h-[40vh] p-3 overflow-hidden" key={index}>
             <CardHeader className="bg-muted rounded-lg h-[20vh] mb-2 overflow-hidden flex justify-center items-center  relative p-1">
-              <img src={`${item?.image}`} className="object-cover" width={150} height={150} alt="" />
+              <Image src={item?.image || "/fallback.jpg"} className="w-full" width={100} height={100} alt="Product Image" unoptimized />
               <div className="px-2 bg-white absolute rounded-lg top-1 left-2 ">
                 <p className="text-[12px]">{item?.stock} stock</p>
               </div>
@@ -79,6 +80,11 @@ export default function Home() {
           </Card>
         ))}
       </div>
+      {isFetching && (
+        <div className="w-full flex justify-center py-4">
+          <Loader2 className="animate-spin text-gray-500" size={30} />
+        </div>
+      )}
     </MainLayout>
   );
 }
