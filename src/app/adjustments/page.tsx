@@ -5,11 +5,11 @@ import { AdjustmentCreatePopup } from "@/components/popup/adjustment-create-popu
 import { AdjusmentDeletePopup } from "@/components/popup/adjustment-delete-popup";
 import { AdjustmentEditPopup } from "@/components/popup/adjustment-edit-popup";
 import useAdjusment from "@/hooks/use-adjustments";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Adjustments() {
   const { handleFetchdata, adjustmentLists } = useAdjusment();
-
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     handleFetchdata();
   }, []);
@@ -17,12 +17,12 @@ export default function Adjustments() {
   return (
     <MainLayout>
       <div className="w-full flex justify-end mb-5">
-        <AdjustmentCreatePopup />
+        <AdjustmentCreatePopup open={open} setOpen={setOpen} />
       </div>
       <div className="grid md:grid-cols-12 gap-3 ">
         <div className="col-span-12 relative overflow-x-auto">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   SKU
@@ -38,8 +38,8 @@ export default function Adjustments() {
             </thead>
             <tbody>
               {adjustmentLists?.data?.map((item, index) => (
-                <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <tr key={index} className="bg-white border-b  border-gray-200">
+                  <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                     {item?.sku}
                   </th>
                   <td className="px-6 py-4">{item?.qty}</td>

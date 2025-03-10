@@ -44,13 +44,14 @@ export function ProductDetailPopup({ sku }: { sku: string }) {
                 <p className="text-sm">{product?.sku}</p>
               </div>
               <div className="w-full flex flex-col py-2 gap-1">
-                <Label className="font-bold text-2md">Title</Label>
+                <Label className="font-bold text-2md">Title*</Label>
                 <Input
                   type="text"
                   name="title"
                   placeholder="Input product title"
                   value={product?.title}
                   onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                  required
                 />
               </div>
               <div className="w-full flex flex-col  py-2 gap-1">
@@ -64,23 +65,25 @@ export function ProductDetailPopup({ sku }: { sku: string }) {
                 />
               </div>
               <div className="w-full flex flex-col  py-2 gap-1">
-                <Label className="font-bold text-2md">Price</Label>
+                <Label className="font-bold text-2md">Price*</Label>
                 <Input
                   type="number"
                   name="price"
                   placeholder="Input product price"
                   value={product?.price}
                   onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                  required
                 />
               </div>
               <div className="w-full flex flex-col  py-2 gap-1">
-                <Label className="font-bold text-2md">Image (URL)</Label>
+                <Label className="font-bold text-2md">Image (URL)*</Label>
                 <Input
                   type="url"
                   name="image"
                   placeholder="Input product image"
                   value={product?.image}
                   onChange={(e) => setProduct({ ...product, [e.target.name]: e.target.value })}
+                  required
                 />
               </div>
             </div>

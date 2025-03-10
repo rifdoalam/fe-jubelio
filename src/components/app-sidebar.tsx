@@ -28,7 +28,7 @@ const data = {
         },
         {
           title: "Adjusment Transactions",
-          url: "/adjustments?page=1",
+          url: "/adjustments",
         },
       ],
     },

@@ -30,8 +30,7 @@ export default function useProduct() {
       });
       router.refresh();
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || "service error";
-      toast.error(errorMessage, {
+      toast.error((error as Error)?.message, {
         position: "top-right",
       });
     }
@@ -41,8 +40,7 @@ export default function useProduct() {
       const response = await fetchProductApi(paginate);
       setProductList(response?.data?.data);
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || "service error";
-      toast.error(errorMessage, {
+      toast.error((error as Error)?.message, {
         position: "top-right",
       });
     }
@@ -51,9 +49,8 @@ export default function useProduct() {
     try {
       const response = await fetchProductDetailApi(sku);
       setProduct(response?.data?.data);
-    } catch (error) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || "service error";
-      toast.error(errorMessage, {
+    } catch (error: unknown) {
+      toast.error((error as Error)?.message, {
         position: "top-right",
       });
     }
@@ -66,8 +63,7 @@ export default function useProduct() {
       });
       await handleFetchDetail(sku);
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || "service error";
-      toast.error(errorMessage, {
+      toast.error((error as Error)?.message, {
         position: "top-right",
       });
     }
@@ -81,8 +77,7 @@ export default function useProduct() {
       });
       hanldeFetchProduct(pagination);
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || "service error";
-      toast.error(errorMessage, {
+      toast.error((error as Error)?.message, {
         position: "top-right",
       });
     }
@@ -98,8 +93,7 @@ export default function useProduct() {
       await hanldeFetchProduct(pagination);
       setLoading(false);
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } }).response?.data?.message || "service error";
-      toast.error(errorMessage, {
+      toast.error((error as Error)?.message, {
         position: "top-right",
       });
     }

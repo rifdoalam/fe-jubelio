@@ -6,14 +6,18 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import useAdjusment from "@/hooks/use-adjustments";
 import React from "react";
-export function AdjustmentEditPopup({ id, index }: { id: number; index: number }) {
+interface AdjustmentEditProps {
+  id: number;
+  index: number;
+}
+export function AdjustmentEditPopup({ id, index }: AdjustmentEditProps) {
   const { handleFetchDetailData, adjustment, setAdjustment, hanldeUpdateData } = useAdjusment();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     hanldeUpdateData();
   };
   const handleOpenDialog = async () => {
-    await handleFetchDetailData(id); // Ambil data terbaru setiap kali dibuka
+    await handleFetchDetailData(id);
   };
   return (
     <Dialog key={index}>
@@ -39,7 +43,7 @@ export function AdjustmentEditPopup({ id, index }: { id: number; index: number }
                 type="number"
                 name="qty"
                 placeholder="Input adjustment quantity"
-                value={adjustment?.qty}
+                value={Number(adjustment?.qty)}
                 onChange={(e) => setAdjustment({ ...adjustment, [e.target.name]: parseInt(e.target.value) })}
               />
             </div>

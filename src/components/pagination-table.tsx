@@ -32,7 +32,7 @@ export function PaginationTable() {
   }, []);
 
   useEffect(() => {
-    // Update pagination range based on the current page
+    handleFetchdata();
     const visiblePages = isMobile ? 3 : 5; // Show 3 pages on mobile, 5 on desktop
     const halfVisiblePages = Math.floor(visiblePages / 2);
 
@@ -47,14 +47,9 @@ export function PaginationTable() {
         newStartIndex = Math.max(1, newEndIndex - visiblePages + 1);
       }
     }
-
     setStartIndex(newStartIndex);
     setEndIndex(newEndIndex);
   }, [pagination?.page, totalPages, isMobile]);
-
-  const nextPage = (value: number) => {
-    setPagination({ ...pagination, page: value });
-  };
 
   return (
     <Pagination>
@@ -62,7 +57,7 @@ export function PaginationTable() {
         <PaginationItem>
           <PaginationPrevious
             className={`${pagination?.page <= 1 ? "pointer-events-none" : ""}`}
-            href={`/adjustments?page=${pagination?.page - 1}`}
+            href={`/adjustments`}
             onClick={() => setPagination({ ...pagination, page: pagination?.page - 1 })}
           />
         </PaginationItem>
@@ -71,7 +66,7 @@ export function PaginationTable() {
         {Array.from({ length: endIndex - startIndex + 1 }).map((_, i) => (
           <PaginationItem key={i + startIndex}>
             <PaginationLink
-              href={`/adjustments?page=${i + startIndex}`}
+              href={`/adjustments`}
               onClick={() => setPagination({ ...pagination, page: startIndex + i })}
               isActive={pagination?.page === i + startIndex}>
               {i + startIndex}
@@ -88,8 +83,8 @@ export function PaginationTable() {
         <PaginationItem>
           <PaginationNext
             className={`${pagination?.page >= totalPages ? "pointer-events-none" : ""}`}
-            href={`/adjustments?page=${pagination?.page + 1}`}
-            onClick={() => nextPage(pagination?.page + 1)}
+            href={`/adjustments`}
+            onClick={() => setPagination({ ...pagination, page: pagination?.page + 1 })}
           />
         </PaginationItem>
       </PaginationContent>

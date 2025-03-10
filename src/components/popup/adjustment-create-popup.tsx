@@ -6,16 +6,22 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import useAdjusment from "@/hooks/use-adjustments";
+import { Dispatch, SetStateAction } from "react";
 
-export function AdjustmentCreatePopup() {
+interface AdjustmentCreatePopupProps {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
+export function AdjustmentCreatePopup({ open, setOpen }: AdjustmentCreatePopupProps) {
   const { handleOnChange, handleCreateData } = useAdjusment();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleCreateData();
+    setOpen(false);
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={() => setOpen(open ? false : true)}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <Plus />

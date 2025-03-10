@@ -1,52 +1,52 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 import MainLayout from "@/components/layout/main-layout";
 import { ProductCreatePopup } from "@/components/popup/product-create-popup";
 import { ProductDeletePopup } from "@/components/popup/product-delete-popup";
 import { ProductDetailPopup } from "@/components/popup/product-detail-popup";
 import { Button } from "@/components/ui/button";
-
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import useProduct from "@/hooks/use-products";
 import { Import } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const { hanldeFetchProduct, pagination, setPagination, productList, handleImportProduct, loading } = useProduct();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [isFetching, setIsFetching] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     hanldeFetchProduct(pagination);
   }, [pagination]);
 
-  const handleScroll = () => {
-    if (sectionRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = sectionRef.current;
-
-      if (scrollTop + clientHeight >= scrollHeight - 1 && !isFetching) {
-        setIsFetching(true);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = sectionRef.current;
+        if (scrollTop + clientHeight >= scrollHeight - 1 && !isFetching) {
+          setIsFetching(true);
+        }
       }
+    };
+
+    const section = sectionRef.current;
+    if (section) {
+      section.addEventListener("scroll", handleScroll);
     }
-  };
+
+    return () => {
+      if (section) {
+        section.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [isFetching]); // Only depend on isFetching here
 
   useEffect(() => {
     if (isFetching) {
       setPagination({ ...pagination, limit: (pagination?.limit ?? 0) + 8 });
       setIsFetching(false);
     }
-  }, [isFetching, setPagination]);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (section) {
-      section.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (section) {
-        section.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
+  }, [isFetching, pagination, setPagination]);
 
   return (
     <MainLayout>
@@ -56,7 +56,7 @@ export default function Home() {
           Import Products
           {loading && <span className="loader"></span>}
         </Button>
-        <ProductCreatePopup />
+        <ProductCreatePopup open={open} setOpen={setOpen} />
       </div>
       <div className="grid md:grid-cols-12 gap-3" style={{ overflowY: "auto", maxHeight: "80vh" }} ref={sectionRef}>
         {productList?.map((item, index) => (
